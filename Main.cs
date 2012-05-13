@@ -15,14 +15,31 @@ namespace thememan
 {
     public partial class XTM : Form
     {
+        public string appdata = (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\X-Chat 2\\");
+        public string progfiles = (Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + "\\X-Chat-WDK\\");
+        //public string progfiles86 = (Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + "\\X-Chat-WDK\\");
+        public string home = (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.xchat2/");
+
+        public string xchatdir;
+        public string themedir = "themes\\";
+
         public XTM()
         {
             InitializeComponent();
+
+            if (Directory.Exists(appdata))
+                xchatdir = (appdata);
+            else if (Directory.Exists(progfiles))
+                xchatdir = (progfiles + "config\\");
+            //else if (Directory.Exists(progfiles86))
+            //    xchatdir = (progfiles86);
+            else if (Directory.Exists(home))
+                xchatdir = (home);
+            else
+                Console.WriteLine("Folder Not Found");
+
             ShowFiles();
         }
-
-        public string xchatdir = (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\X-Chat 2\\");
-        public string themedir = "themes\\";
 
         private void ShowFiles()
         {
