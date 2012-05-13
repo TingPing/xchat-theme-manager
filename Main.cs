@@ -21,22 +21,18 @@ namespace thememan
             ShowFiles();
         }
 
-        //TODO
-        //find folder per os
-        //clean up folder strings throughout
-        public string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        public string xchatdir = "\\X-Chat 2\\";
+        public string xchatdir = (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\X-Chat 2\\");
         public string themedir = "themes\\";
 
         private void ShowFiles()
         {
-            if (System.IO.Directory.Exists(appdata + xchatdir))
-                foreach (string theme in Directory.GetDirectories(appdata + xchatdir + themedir))
+            if (System.IO.Directory.Exists(xchatdir + themedir))
+                foreach (string theme in Directory.GetDirectories(xchatdir + themedir))
                 {
-                    themelist.Items.Add(theme.Remove(0, appdata.Length + xchatdir.Length + themedir.Length));
+                    themelist.Items.Add(theme.Remove(0, xchatdir.Length + themedir.Length));
                 }
             else
-                FirstRun();
+                Directory.CreateDirectory(xchatdir + themedir);
         }
 
         private void ShowColors(List<List<string>> themecolors)
@@ -44,8 +40,6 @@ namespace thememan
             List<Control> labels = this.Controls.OfType<Label>().Cast<Control>().OrderBy(label => label.Name).ToList();
             for (byte themecolor = 0; themecolor < themecolors.Count; themecolor++)
             {
-                //TODO
-                //possibly clean up?
                 byte rval = Convert.ToByte(int.Parse(themecolors[themecolor][0].ToString(), System.Globalization.NumberStyles.HexNumber) / 257);
                 byte gval = Convert.ToByte(int.Parse(themecolors[themecolor][1].ToString(), System.Globalization.NumberStyles.HexNumber) / 257);
                 byte bval = Convert.ToByte(int.Parse(themecolors[themecolor][2].ToString(), System.Globalization.NumberStyles.HexNumber) / 257);
@@ -69,14 +63,12 @@ namespace thememan
         private List<List<string>> ReadTheme(string theme)
         {
             List<List<string>> themecolors = new List<List<string>>();
-            foreach (string line in File.ReadLines(appdata + xchatdir + themedir + theme + "/colors.conf"))
+            foreach (string line in File.ReadLines(xchatdir + themedir + theme + "/colors.conf"))
             {
                 List<string> colors = new List<string>();
                 List<string> colorlist = new List<string>();
                 string[] possiblecolors = { "color_256", "color_257", "color_258", "color_259" };
 
-                //TODO
-                //button/menu to alternate all colors?
                 for (byte num = 16; num <=31; num++)
                     colorlist.Add("color_" + num);
                 colorlist.AddRange(possiblecolors);
@@ -95,23 +87,26 @@ namespace thememan
 
         private void savebutton_Click(object sender, EventArgs e)
         {
-            string fulldir = appdata + xchatdir + themedir;
             string themename = (Microsoft.VisualBasic.Interaction.InputBox("Save current theme as:", "Save Prompt", ""));
             if (themename != null && themename != "")
                 try
                 {
-                    System.IO.Directory.CreateDirectory(appdata + xchatdir + themedir + themename);
-                    System.IO.File.Copy(appdata + xchatdir + "colors.conf", fulldir + themename + "\\colors.conf", true);
-                    try
+                    System.IO.Directory.CreateDirectory(xchatdir + themedir + themename);
+                    if (File.Exists(xchatdir + "colors.conf"))
                     {
-                        if (System.IO.File.Equals(appdata + xchatdir + "pevents.conf", fulldir + "original\\pevents.conf") == false)
-                        {
-                            System.IO.File.Copy(appdata + xchatdir + "pevents.conf", fulldir + themename + "\\pevents.conf", true);
-                        }
-                    }
-                    catch (FileNotFoundException err)
-                    {
-                        System.IO.File.Copy(appdata + xchatdir + "pevents.conf", fulldir + themename + "\\pevents.conf", true);
+                        File.Copy(xchatdir + "colors.conf", xchatdir + themedir + themename + "\\colors.conf", true);
+                        if (File.Exists(xchatdir + "pevents.conf"))
+                            try
+                            {
+                                if (File.Equals(xchatdir + "pevents.conf", xchatdir + themedir + "original\\pevents.conf") == false)
+                                {
+                                    File.Copy(xchatdir + "pevents.conf", xchatdir + themedir + themename + "\\pevents.conf", true);
+                                }
+                            }
+                            catch (FileNotFoundException)
+                            {
+                                File.Copy(xchatdir + "pevents.conf", xchatdir + themedir + themename + "\\pevents.conf", true);
+                            }
                     }
                 }
                 catch (FileNotFoundException err)
@@ -127,10 +122,10 @@ namespace thememan
         private void loadbutton_Click(object sender, EventArgs e)
         {
             MessageBox.Show("This will overwrite current theme, Continue?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-            File.Copy(appdata + xchatdir + themedir + themelist.SelectedItem.ToString() + "\\colors.conf", appdata + xchatdir + "colors.conf", true);
-            if (File.Exists(appdata + xchatdir + themedir + themelist.SelectedItem.ToString() + "\\pevents.conf"))
+            File.Copy(xchatdir + themedir + themelist.SelectedItem.ToString() + "\\colors.conf", xchatdir + "colors.conf", true);
+            if (File.Exists(xchatdir + themedir + themelist.SelectedItem.ToString() + "\\pevents.conf"))
             {
-                File.Copy(appdata + xchatdir + themedir + themelist.SelectedItem.ToString() + "\\pevents.conf", appdata + xchatdir + "pevents.conf", true);
+                File.Copy(xchatdir + themedir + themelist.SelectedItem.ToString() + "\\pevents.conf", xchatdir + "pevents.conf", true);
             }
         }
 
@@ -138,21 +133,5 @@ namespace thememan
         {
             ShowColors(ReadTheme(themelist.SelectedItem.ToString()));
         }
-
-        private void FirstRun()
-        {
-            string themefolder = appdata + xchatdir + themedir;
-            Directory.CreateDirectory(themefolder);
-            using (WebClient client = new WebClient())
-            {
-                Directory.CreateDirectory(themefolder + "Monokai");
-                client.DownloadFile("https://raw.github.com/gist/1587237/147f7d916360abae6e44bc559d2f5cf594022dbd/colors.conf", themefolder + "Monokai\\colors.conf");
-                client.DownloadFile("https://raw.github.com/gist/1587237/f2c52024d54bd9a4110f8b6aa9a2eeb31e7ac8ca/pevents.conf", themefolder + "Monokai\\pevents.conf");
-                //TODO
-                //Download zip of multiple themes
-                //System.IO.Compression.DeflateStream(themefolder + );
-            }
-        }
-
     }
 }
