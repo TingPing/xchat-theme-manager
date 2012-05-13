@@ -16,7 +16,7 @@ namespace thememan
     public partial class XTM : Form
     {
         public string appdata = (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\X-Chat 2\\");
-        public string progfiles = (Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + "\\X-Chat-WDK\\");
+        public string progfiles = (Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + "\\XChat-WDK\\");
         //public string progfiles86 = (Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + "\\X-Chat-WDK\\");
         public string home = (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.xchat2/");
 
