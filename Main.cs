@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.ComponentModel;
@@ -16,8 +16,6 @@ namespace thememan
     public partial class XTM : Form
     {
         public string appdata = (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\X-Chat 2\\");
-        public string progfiles = (Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + "\\XChat-WDK\\");
-        //public string progfiles86 = (Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + "\\X-Chat-WDK\\");
         public string home = (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.xchat2/");
 
         public string xchatdir;
@@ -26,17 +24,15 @@ namespace thememan
         public XTM()
         {
             InitializeComponent();
-
-            if (Directory.Exists(appdata))
+            
+            if (File.Exists("portable-mode"))
+                xchatdir = ("config\\");
+            else if (Directory.Exists(appdata))
                 xchatdir = (appdata);
-            else if (Directory.Exists(progfiles))
-                xchatdir = (progfiles + "config\\");
-            //else if (Directory.Exists(progfiles86))
-            //    xchatdir = (progfiles86);
             else if (Directory.Exists(home))
                 xchatdir = (home);
             else
-                Console.WriteLine("Folder Not Found");
+                Console.WriteLine("Install not found");
 
             ShowFiles();
         }
