@@ -16,23 +16,23 @@ namespace thememan
     public partial class XTM : Form
     {
         public string appdata = (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\X-Chat 2\\");
-        public string home = (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/.xchat2/");
+        public string home = (Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/.xchat2/");
 
         public string xchatdir;
         public string themedir = "themes\\";
 
-        public XTM()
-        {
-            InitializeComponent();
+        public XTM ()
+		{
+			InitializeComponent ();
             
-            if (File.Exists("portable-mode"))
-                xchatdir = ("config\\");
-            else if (Directory.Exists(appdata))
-                xchatdir = (appdata);
-            else if (Directory.Exists(home))
-                xchatdir = (home);
-            else
-                Console.WriteLine("Install not found");
+			if (File.Exists ("portable-mode"))
+				xchatdir = ("config\\");
+			else if (Directory.Exists (appdata))
+				xchatdir = (appdata);
+			else if (Directory.Exists (home)) {
+				xchatdir = (home); themedir = "themes/";
+			} else
+				Console.WriteLine("Install not found");
 
             ShowFiles();
         }
