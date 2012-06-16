@@ -118,13 +118,14 @@ namespace thememan
             OpenFileDialog importdialog = new OpenFileDialog();
             importdialog.Filter = "Zip Files (.zip)|*.zip";
             importdialog.FilterIndex = 1;
-            bool okclicked = Convert.ToBoolean(importdialog.ShowDialog());
-            if (okclicked == true)
+            importdialog.ShowDialog();
+            try
             {
                 ZipFile zip = ZipFile.Read(importdialog.FileName);
                 zip.ExtractAll(xchatdir + themedir);
                 ShowFiles();
             }
+            catch{ } //not the best fix
         }
     }
 }
