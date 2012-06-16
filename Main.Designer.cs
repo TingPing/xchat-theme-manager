@@ -48,8 +48,8 @@
             this.themecolorf = new System.Windows.Forms.Label();
             this.themecolorfg = new System.Windows.Forms.Label();
             this.themecolortextbg = new System.Windows.Forms.Label();
-            this.savebutton = new System.Windows.Forms.Button();
-            this.loadbutton = new System.Windows.Forms.Button();
+            this.importbutton = new System.Windows.Forms.Button();
+            this.applybutton = new System.Windows.Forms.Button();
             this.themecolorfgmarked = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -207,25 +207,25 @@
             this.themecolortextbg.Size = new System.Drawing.Size(208, 223);
             this.themecolortextbg.TabIndex = 20;
             // 
-            // savebutton
+            // importbutton
             // 
-            this.savebutton.Location = new System.Drawing.Point(90, 220);
-            this.savebutton.Name = "savebutton";
-            this.savebutton.Size = new System.Drawing.Size(60, 23);
-            this.savebutton.TabIndex = 2;
-            this.savebutton.Text = "Save As";
-            this.savebutton.UseVisualStyleBackColor = true;
-            this.savebutton.Click += new System.EventHandler(this.savebutton_Click);
+            this.importbutton.Location = new System.Drawing.Point(90, 220);
+            this.importbutton.Name = "importbutton";
+            this.importbutton.Size = new System.Drawing.Size(60, 23);
+            this.importbutton.TabIndex = 2;
+            this.importbutton.Text = "Import";
+            this.importbutton.UseVisualStyleBackColor = true;
+            this.importbutton.Click += new System.EventHandler(this.importbutton_Click_1);
             // 
-            // loadbutton
+            // applybutton
             // 
-            this.loadbutton.Location = new System.Drawing.Point(23, 220);
-            this.loadbutton.Name = "loadbutton";
-            this.loadbutton.Size = new System.Drawing.Size(60, 23);
-            this.loadbutton.TabIndex = 1;
-            this.loadbutton.Text = "Load";
-            this.loadbutton.UseVisualStyleBackColor = true;
-            this.loadbutton.Click += new System.EventHandler(this.loadbutton_Click);
+            this.applybutton.Location = new System.Drawing.Point(23, 220);
+            this.applybutton.Name = "applybutton";
+            this.applybutton.Size = new System.Drawing.Size(60, 23);
+            this.applybutton.TabIndex = 1;
+            this.applybutton.Text = "Apply";
+            this.applybutton.UseVisualStyleBackColor = true;
+            this.applybutton.Click += new System.EventHandler(this.applybutton_Click_1);
             // 
             // themecolorfgmarked
             // 
@@ -259,8 +259,8 @@
             this.Controls.Add(this.themecolor0);
             this.Controls.Add(this.themecolor8);
             this.Controls.Add(this.themecolor4);
-            this.Controls.Add(this.savebutton);
-            this.Controls.Add(this.loadbutton);
+            this.Controls.Add(this.importbutton);
+            this.Controls.Add(this.applybutton);
             this.Controls.Add(this.themelist);
             this.Controls.Add(this.themecolortextbg);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -294,8 +294,8 @@
         private System.Windows.Forms.Label themecolorf;
         private System.Windows.Forms.Label themecolorfg;
         private System.Windows.Forms.Label themecolortextbg;
-        private System.Windows.Forms.Button savebutton;
-        private System.Windows.Forms.Button loadbutton;
+        private System.Windows.Forms.Button importbutton;
+        private System.Windows.Forms.Button applybutton;
         private System.Windows.Forms.Label themecolorfgmarked;
     }
 }

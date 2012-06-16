@@ -8,8 +8,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
 using System.Net;
+using Ionic.Zip;
 
 namespace thememan
 {
@@ -98,43 +98,9 @@ namespace thememan
             return themecolors;
         }
 
-        private void savebutton_Click(object sender, EventArgs e)
+        private void applybutton_Click_1(object sender, EventArgs e)
         {
-            string themename = (Microsoft.VisualBasic.Interaction.InputBox("Save current theme as:", "Save Prompt", ""));
-            if (themename != null && themename != "")
-                try
-                {
-                    System.IO.Directory.CreateDirectory(xchatdir + themedir + themename);
-                    if (File.Exists(xchatdir + "colors.conf"))
-                    {
-                        File.Copy(xchatdir + "colors.conf", xchatdir + themedir + themename + "\\colors.conf", true);
-                        if (File.Exists(xchatdir + "pevents.conf"))
-                            try
-                            {
-                                if (File.Equals(xchatdir + "pevents.conf", xchatdir + themedir + "original\\pevents.conf") == false)
-                                {
-                                    File.Copy(xchatdir + "pevents.conf", xchatdir + themedir + themename + "\\pevents.conf", true);
-                                }
-                            }
-                            catch (FileNotFoundException)
-                            {
-                                File.Copy(xchatdir + "pevents.conf", xchatdir + themedir + themename + "\\pevents.conf", true);
-                            }
-                    }
-                }
-                catch (FileNotFoundException err)
-                {
-                    Console.WriteLine(err);
-                }
-                catch (DirectoryNotFoundException err2)
-                {
-                    Console.WriteLine(err2);
-                }
-        }
-
-        private void loadbutton_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("This will overwrite current theme, Continue?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            MessageBox.Show("XChat must be closed and this will overwrite your current theme, Continue?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
             File.Copy(xchatdir + themedir + themelist.SelectedItem.ToString() + "\\colors.conf", xchatdir + "colors.conf", true);
             if (File.Exists(xchatdir + themedir + themelist.SelectedItem.ToString() + "\\pevents.conf"))
             {
@@ -145,6 +111,20 @@ namespace thememan
         private void theme_selected(object sender, EventArgs e)
         {
             ShowColors(ReadTheme(themelist.SelectedItem.ToString()));
+        }
+
+        private void importbutton_Click_1(object sender, EventArgs e)
+        {
+            OpenFileDialog importdialog = new OpenFileDialog();
+            importdialog.Filter = "Zip Files (.zip)|*.zip";
+            importdialog.FilterIndex = 1;
+            bool okclicked = Convert.ToBoolean(importdialog.ShowDialog());
+            if (okclicked == true)
+            {
+                ZipFile zip = ZipFile.Read(importdialog.FileName);
+                zip.ExtractAll(xchatdir + themedir);
+                ShowFiles();
+            }
         }
     }
 }
